@@ -15,5 +15,22 @@ metadata = MetaData(naming_convention={
 
 db = SQLAlchemy(naming_convention={})
 
+# Define the Restaurant models
+class Restaurant(db.Model, SerializerMixin):
+    __tablename__ = 'restaurants'
 
+    # Define serialization rules for the model
+    serialize_rules = ('-restaurant_pizzas', 'pizzas', '-pizzas.created_at', '-pizzas.updated_at')
 
+    # Define columns for the Restaurant table
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, unique=True)
+    address = db.Column(db.String)
+    
+    # Define a relationship with Restaurant_pizzas and create an association proxy for pizzas
+    restaurant_pizzas = db.relationship('Restaurant_pizzas', back_populates='restaurant', cascade='all, delete-orphan')
+    pizzas = association_proxy('restaurant_pizzas', 'pizza')
+
+    # Define a string representation for the Restaurant object
+    def __repr__(self):
+        return f'(id={self.id}, name={self.name} address={self.address})'
