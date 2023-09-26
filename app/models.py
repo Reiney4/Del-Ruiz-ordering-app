@@ -11,5 +11,9 @@ metadata = MetaData(naming_convention={
     "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
 })
 
+# create a Flask-SQLAlchemy instance and associate it with the metadata
+
+db = SQLAlchemy(naming_convention={})
+
 
 
